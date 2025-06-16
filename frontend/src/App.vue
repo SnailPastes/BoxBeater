@@ -5,7 +5,9 @@ import HomeView from './views/HomeView.vue';
 </script>
 
 <template>
-  <navbar></navbar>
-  <!-- <HomeView></HomeView> -->
-  <!-- <RouterView></RouterView> -->
+  <div id="app">
+    <navbar></navbar>
+    <router-view></router-view>
+    <home-view></home-view>
+  </div>
 </template>
