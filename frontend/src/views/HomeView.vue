@@ -87,8 +87,6 @@ async function toggleRecording() {
   }
 }
 
-
-
 onMounted(() => {
   setupAudioRouting();
 });
