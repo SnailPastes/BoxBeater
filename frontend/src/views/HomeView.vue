@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import drumKick from "../assets/sound-effects/Drum-Kick.mp3";
-import drumSnare from "../assets/sound-effects/Drum-Snare.mp3";
+import drumKickUrl from "../assets/sound-effects/Drum-Kick.mp3?url";
+import drumSnareUrl from "../assets/sound-effects/Drum-Snare.mp3?url";
+
 
 // Store sounds and their elements
 const sounds = ref([
-  { name: "Kicks", src: drumKick, checked: false },
-  { name: "Snare", src: drumSnare, checked: false }
+  { name: "Kicks", src: drumKickUrl, checked: false },
+  { name: "Snare", src: drumSnareUrl, checked: false }
 ]);
 
 const audioContext = new AudioContext();
@@ -46,9 +47,24 @@ function setupAudioRouting() {
     const blob = new Blob(recordedChunks.value, { type: "audio/webm" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
+    a.className = "download-link";
     a.href = url;
-    a.download = "recording.webm";
+    a.download = "recording.mp3";
     a.textContent = "Download Recording";
+    document.body.appendChild(a);
+
+    Object.assign(a.style, {
+      display: "inline-block",
+      marginTop: "20px",
+      padding: "10px 20px",
+      backgroundColor: "aqua",
+      color: "black",
+      borderRadius: "10px",
+      textDecoration: "none",
+      alignItems: "center",
+      textAlign: "center",
+    });
+
     document.body.appendChild(a);
   };
 }
@@ -84,7 +100,7 @@ function handleFileUpload(event: Event) {
   if (!file) return;
 
   const url = URL.createObjectURL(file);
-  const name = file.name.replace(/\.[^/.]+$/, ""); // remove .mp3
+  const name = file.name.replace(/\.[^/.]+$/, "");
 
   sounds.value.push({
     name,
@@ -95,12 +111,8 @@ function handleFileUpload(event: Event) {
 </script>
 
 <template>
-  <div class="container">
-    <label id="AddBtn">
-      Upload Sound
-      <input type="file" accept="audio/mp3" @change="handleFileUpload" hidden />
-    </label>
 
+  <div class="container">
     <div v-for="sound in sounds" :key="sound.name">
       <audio :id="sound.name" :src="sound.src" preload="auto"></audio>
 
@@ -109,6 +121,10 @@ function handleFileUpload(event: Event) {
         <span class="background">{{ sound.name }}</span>
       </label>
     </div>
+    <label id="AddBtn">
+      +
+      <input type="file" accept="audio/mp3" @change="handleFileUpload" hidden />
+    </label>
   </div>
 
   <button @click="toggleRecording" class="record-button">
@@ -142,21 +158,21 @@ function handleFileUpload(event: Event) {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 20vh;
   text-align: center;
   gap: 20px;
   margin-left: 115px;
 }
 
 #AddBtn {
-  background-color: aqua;
+  background-color: rgb(255, 255, 255);
   padding: 20px;
   cursor: pointer;
   border-radius: 10px;
-}
-
-#AddBtn:hover {
-  background-color: blue;
+  outline-color: aqua;
+  outline-style: solid;
+  outline-width: 5px;
+  width: 100px;
 }
 
 .soundName {

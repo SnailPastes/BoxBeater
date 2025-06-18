@@ -8,6 +8,5 @@ import HomeView from './views/HomeView.vue';
   <div id="app">
     <navbar></navbar>
     <router-view></router-view>
-    <home-view></home-view>
   </div>
 </template>
